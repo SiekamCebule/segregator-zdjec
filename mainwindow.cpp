@@ -48,8 +48,8 @@ void MainWindow::on_pushButton_addDir_clicked()
     }
 
     for(auto & fileInfo : mainFolder.entryInfoList(QDir::Files)){
-            BaseItem * item = new FileItem(QPixmap(fileInfo.filePath()), fileInfo.fileName(), 0, fileInfo.size());
-            folders[folders.size() - 1].push_back(item);
+        BaseItem * item = new FileItem(QPixmap(fileInfo.filePath()), fileInfo.fileName(), 0, fileInfo.size());
+        folders[folders.size() - 1].push_back(item);
     }
     /*for(auto & fileInfo : mainFolder.entryInfoList(QDir::Dirs)){
         BaseItem * item = new BaseItem;
@@ -76,8 +76,7 @@ void MainWindow::loadAllowedFormats()
 
         switch(message->exec()){
         case QMessageBox::Close:
-            qDebug()<<"close button";
-
+            exit(0);
             break;
         default:
             qDebug()<<"default";
