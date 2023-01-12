@@ -8,6 +8,7 @@
 #include <QFileSystemModel>
 #include <QStringList>
 #include <QFileInfo>
+#include <QLabel>
 
 #include "itemClasses/baseitem.h"
 #include "itemClasses/fileitem.h"
@@ -45,16 +46,34 @@ void MainWindow::on_pushButton_addDir_clicked()
     if(!(mainFolder.entryInfoList(QDir::Files | QDir::Dirs).empty()))
     {
         folders.push_back(QVector<BaseItem *>());
+        QVector<BaseItem *> * actualVector = &folders[folders.size() - 1];
+
+        for(auto & fileInfo : mainFolder.entryInfoList(QDir::Files)){
+
+            bool ok = false;
+            for(auto & format : allowedFormats)
+                while(ok == false){
+                    if(fileInfo.fileName().contains(format))
+                        ok = true;
+                }
+
+            if(ok == true){
+                BaseItem * item = new FileItem(QPixmap(fileInfo.filePath()), fileInfo.size(), fileInfo.fileName(), 0);
+                item->setType(BaseItem::File);
+                qDebug()<<item->getID();
+                actualVector->push_back(item);
+            }
+        }
+        for(auto & fileInfo : mainFolder.entryInfoList(QDir::Dirs)){
+            if(fileInfo.isDir()){
+                BaseItem * item = new BaseItem(fileInfo.fileName(), 0, BaseItem::Dir);
+                qDebug()<<item->getID();
+                actualVector->push_back(item);
+            }
+        }
     }
 
-    for(auto & fileInfo : mainFolder.entryInfoList(QDir::Files)){
-        BaseItem * item = new FileItem(QPixmap(fileInfo.filePath()), fileInfo.fileName(), 0, fileInfo.size());
-        folders[folders.size() - 1].push_back(item);
-    }
-    /*for(auto & fileInfo : mainFolder.entryInfoList(QDir::Dirs)){
-        BaseItem * item = new BaseItem;
-        folders[folders.size() - 1];
-    }*/
+
 }
 
 void MainWindow::loadAllowedFormats()

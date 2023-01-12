@@ -7,7 +7,7 @@
 class BaseItem
 {
 public:
-    BaseItem(const QString &name, int parentID, qint64 size, int type);
+    BaseItem(const QString &name, int parentID, int type);
 
     enum Type{
         File,
@@ -23,9 +23,6 @@ public:
     int getParentID() const;
     void setParentID(int newParentID);
 
-    qint64 getSize() const;
-    void setSize(qint64 newSize);
-
     int getType() const;
     void setType(int newType);
 
@@ -33,7 +30,7 @@ private:
     QString name;
     int ID;
     int parentID;
-    qint64 size;
+
     int type;
 };
 
